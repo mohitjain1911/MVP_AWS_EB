@@ -33,13 +33,15 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: Create EB environment if missing
+      - name: Debug EB Environments
         run: |
-          if ! aws elasticbeanstalk describe-environments --environment-names ${{ secrets.EB_ENV_NAME }} --query 'Environments' --output text; then
-            eb create ${{ secrets.EB_ENV_NAME }} --single --instance_type t3.small
-          fi
+          aws elasticbeanstalk describe-environments --region ${{ secrets.AWS_REGION }} \
+            --query 'Environments[*].{App:ApplicationName,Env:EnvironmentName,Status:Status}'
+
 
       - name: Deploy to Elastic Beanstalk
         run: |
-          eb deploy ${{ secrets.EB_ENV_NAME }}
+          eb init ${{ secrets.EB_APP_NAME }} -p python-3.11 --region ${{ secrets.AWS_REGION }}
+          eb use ${{ secrets.EB_ENV_NAME }}
+          eb deploy
 
