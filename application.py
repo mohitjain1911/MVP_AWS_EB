@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+import os
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://admin:StrongPassword123@taskdb.cpu2ei8ogsps.us-east-1.rds.amazonaws.com:3306/taskdb'
@@ -45,8 +46,11 @@ def delete(id):
     db.session.commit()
     return redirect(url_for('index'))
 
+# For local testing
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 8080))
+    app.run(host='0.0.0.0', port=port)
 
-# for Elastic Beanstalk
+# For Elastic Beanstalk
 application = app
+
