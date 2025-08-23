@@ -36,5 +36,6 @@ jobs:
       - name: Deploy to Elastic Beanstalk
         run: |
           eb init ${{ secrets.EB_APP_NAME }} -p python-3.9 --region ${{ secrets.AWS_REGION }}
-          eb deploy ${{ secrets.EB_ENV_NAME }}
+          eb use ${{ secrets.EB_ENV_NAME }}
+          eb deploy
 
