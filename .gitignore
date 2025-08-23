@@ -30,10 +30,6 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 
-# Elastic Beanstalk files
-.elasticbeanstalk/*
-!.elasticbeanstalk/*.cfg.yml
-!.elasticbeanstalk/*.global.yml
 
 # IDE / Editor settings
 .vscode/
