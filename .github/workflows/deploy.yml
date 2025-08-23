@@ -41,6 +41,5 @@ jobs:
 
       - name: Deploy to Elastic Beanstalk
         run: |
-          eb create ${{ secrets.EB_ENV_NAME }} --single --instance_type t3.small
           eb deploy ${{ secrets.EB_ENV_NAME }}
 
