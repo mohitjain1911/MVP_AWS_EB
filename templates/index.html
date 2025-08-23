@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Task Manager</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container mt-4">
+    <h1 class="mb-4">✅ Task Manager</h1>
+
+    <form action="/add" method="POST" class="d-flex mb-4">
+        <input type="text" name="title" placeholder="Enter new task" class="form-control me-2" required>
+        <button type="submit" class="btn btn-primary">Add Task</button>
+    </form>
+
+    <ul class="list-group">
+        {% for task in tasks %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span>
+                {% if task.status == 'Done' %}
+                    <s>{{ task.title }}</s>
+                {% else %}
+                    {{ task.title }}
+                {% endif %}
+            </span>
+            <span>
+                <a href="/update/{{ task.id }}" class="btn btn-sm btn-warning">Toggle</a>
+                <a href="/delete/{{ task.id }}" class="btn btn-sm btn-danger">Delete</a>
+            </span>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
