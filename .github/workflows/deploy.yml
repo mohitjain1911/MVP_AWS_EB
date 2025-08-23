@@ -33,6 +33,12 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
+      - name: Debug EB Environments
+        run: |
+          aws elasticbeanstalk describe-environments --region ${{ secrets.AWS_REGION }} \
+            --query 'Environments[*].{App:ApplicationName,Env:EnvironmentName,Status:Status}'
+
+
       - name: Deploy to Elastic Beanstalk
         run: |
           eb init ${{ secrets.EB_APP_NAME }} -p python-3.11 --region ${{ secrets.AWS_REGION }}
