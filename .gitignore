@@ -30,6 +30,9 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 
+#LARGE FILES
+.elasticbeanstalk/app_versions/
+*.zip
 
 # IDE / Editor settings
 .vscode/
