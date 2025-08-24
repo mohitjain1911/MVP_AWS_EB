@@ -33,13 +33,22 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: Create EB environment if missing
+      - name: Create or Update EB Environment
         run: |
-          if ! aws elasticbeanstalk describe-environments --environment-names ${{ secrets.EB_ENV_NAME }} --query 'Environments' --output text; then
-            eb create ${{ secrets.EB_ENV_NAME }} --single --instance_type t3.small
-          fi
+          APP_NAME=${{ secrets.EB_APP_NAME }}
+          ENV_NAME=${{ secrets.EB_ENV_NAME }}
 
-      - name: Deploy to Elastic Beanstalk
-        run: |
-          eb deploy ${{ secrets.EB_ENV_NAME }}
+          # Check if env exists
+          ENV_EXISTS=$(aws elasticbeanstalk describe-environments \
+            --application-name "$APP_NAME" \
+            --environment-names "$ENV_NAME" \
+            --query 'Environments' --output text)
+
+          if [ -z "$ENV_EXISTS" ]; then
+            echo "Environment not found. Creating..."
+            eb create "$ENV_NAME" --single --instance_type t3.small
+          else
+            echo "Environment exists. Deploying update..."
+            eb deploy "$ENV_NAME"
+          fi
 
